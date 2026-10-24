@@ -1,0 +1,53 @@
+# Entorno de la Actividad 4: correo institucional del dominio de laboratorio (horizonte.internal).
+#   docker compose up -d --build
+#   bash scripts/levantar.sh        # instala DNS, CA, correo y buzones, publica los registros y verifica
+x-nodo: &nodo
+  build: .
+  image: horizonte-correo:24.04
+  privileged: true            # necesario para que systemd funcione dentro del contenedor
+  cgroup: host                # requiere cgroup v2
+  tmpfs: [/run, /run/lock, /tmp]
+  volumes: [".:/lab:ro", "./compartido:/compartido"]   # el repositorio en /lab (solo lectura); /compartido para CA, claves y registros DKIM
+  dns: [10.44.0.2]            # todos resuelven con ns1 (zonas .internal propias y reenvío a internet)
+
+services:
+  ns1:
+    <<: *nodo
+    container_name: act4-ns1
+    hostname: ns1
+    dns: [127.0.0.1]
+    networks:
+      correo: {ipv4_address: 10.44.0.2}
+  mail:
+    <<: *nodo
+    container_name: act4-mail
+    hostname: mail
+    volumes: [".:/lab:ro", "./compartido:/compartido", "clamdb:/var/lib/clamav"]
+    networks:
+      correo: {ipv4_address: 10.44.0.25}
+  mail2:
+    <<: *nodo
+    container_name: act4-mail2
+    hostname: mail2
+    networks:
+      correo: {ipv4_address: 10.44.0.26}
+  cliente:
+    <<: *nodo
+    container_name: act4-cliente
+    hostname: cliente
+    networks:
+      correo: {ipv4_address: 10.44.0.50}
+  externo:
+    <<: *nodo
+    container_name: act4-externo
+    hostname: externo
+    networks:
+      correo: {ipv4_address: 10.44.0.66}
+
+volumes:
+  clamdb:
+
+networks:
+  correo:
+    ipam:
+      config: [{subnet: 10.44.0.0/24, gateway: 10.44.0.1}]

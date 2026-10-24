@@ -1,0 +1,3 @@
+zone "horizonte.internal" { type primary; file "/etc/bind/zonas/db.horizonte.internal"; };
+zone "familia.internal"   { type primary; file "/etc/bind/zonas/db.familia.internal"; };
+zone "0.44.10.in-addr.arpa" { type primary; file "/etc/bind/zonas/db.10.44.0"; };

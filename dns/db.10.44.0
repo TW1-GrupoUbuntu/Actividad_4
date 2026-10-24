@@ -1,0 +1,8 @@
+; Zona inversa 10.44.0.0/24. El 66 (externo) NO tiene PTR a proposito: es una de las causas de spam que se investigan.
+$TTL 300
+@   IN SOA ns1.horizonte.internal. hostmaster.horizonte.internal. ( 2026102401 3600 900 604800 300 )
+    IN NS  ns1.horizonte.internal.
+2   IN PTR ns1.horizonte.internal.
+25  IN PTR mail.horizonte.internal.
+26  IN PTR mail.familia.internal.
+50  IN PTR cliente.horizonte.internal.

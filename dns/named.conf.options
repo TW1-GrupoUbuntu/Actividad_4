@@ -1,0 +1,14 @@
+// ns1: autoritativo de las zonas .internal y resolutor (con reenvio a internet) solo para la red del laboratorio.
+options {
+    directory "/var/cache/bind";
+    listen-on { any; };
+    listen-on-v6 { none; };
+    allow-query { any; };
+    recursion yes;
+    allow-recursion { 127.0.0.1; 10.44.0.0/24; };
+    forwarders { 1.1.1.1; 8.8.8.8; };
+    forward first;
+    dnssec-validation no;
+    version "none";
+    allow-transfer { none; };
+};

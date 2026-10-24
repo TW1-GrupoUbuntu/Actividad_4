@@ -1,0 +1,15 @@
+informe/
+evidencias/
+resultados/
+compartido/
+*.pdf
+*.docx
+*.pptx
+*.pcap
+*.key
+*.private
+*.log
+__pycache__/
+.vscode/
+.DS_Store
+Thumbs.db
